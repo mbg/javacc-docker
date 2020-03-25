@@ -1,18 +1,39 @@
-name: Build Docker image
+name: Docker
 
 on:
   push:
     branches: [ master ]
   pull_request:
-    branches: [ master ]
+
+env:
+  IMAGE_NAME: javacc
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
+
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag javacc-docker:7.0.5
+      run: docker build . --file Dockerfile
+
+  push:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag $IMAGE_NAME
+
+    - name: Authenticate to registry 
+      run: echo "${{ secrets.GH_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+
+    - name: Publish image 
+      run: |
+        IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME
+
+        docker tag $IMAGE_NAME $IMAGE_ID:latest
+        docker push $IMAGE_ID:latest
