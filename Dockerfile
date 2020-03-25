@@ -1,4 +1,4 @@
-FROM openjdk:7
+FROM openjdk:15-alpine
 ARG JAVACC_VERSION=7.0.5
 ENV JAVACC_VERSION ${JAVACC_VERSION}
 LABEL maintainer="m.gale@warwick.ac.uk"
