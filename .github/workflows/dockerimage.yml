@@ -55,4 +55,4 @@ jobs:
         docker push $IMAGE_ID:latest
       env:
         JAVACC_VERSION: ${{ matrix.javacc }}
-      if: ${{ matrix.javacc }} == '7.0.5'
+      if: matrix.javacc == '7.0.5'
