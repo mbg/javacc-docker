@@ -11,6 +11,7 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
 
     steps:
     - uses: actions/checkout@v2
@@ -22,18 +23,36 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
 
+    strategy:
+      matrix:
+        javacc: [7.0.5, 7.0.4]
+
     steps:
     - uses: actions/checkout@v2
 
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag $IMAGE_NAME
-
     - name: Authenticate to registry 
       run: echo "${{ secrets.GH_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+
+    - name: Build the Docker image
+      run: docker build . --build-arg JAVACC_VERSION=${JAVACC_VERSION} --file Dockerfile --tag $IMAGE_NAME:$JAVACC_VERSION
+      env:
+        JAVACC_VERSION: ${{ matrix.javacc }}
 
     - name: Publish image 
       run: |
         IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME
 
-        docker tag $IMAGE_NAME $IMAGE_ID:latest
+        docker tag $IMAGE_NAME:$JAVACC_VERSION $IMAGE_ID:$JAVACC_VERSION
+        docker push $IMAGE_ID:$JAVACC_VERSION
+      env:
+        JAVACC_VERSION: ${{ matrix.javacc }}
+
+    - name: Publish latest image 
+      run: |
+        IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME
+
+        docker tag $IMAGE_NAME:$JAVACC_VERSION $IMAGE_ID:latest
         docker push $IMAGE_ID:latest
+      env:
+        JAVACC_VERSION: ${{ matrix.javacc }}
+      if: ${{ matrix.javacc }} == '7.0.5'
