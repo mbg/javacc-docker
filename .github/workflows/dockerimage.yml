@@ -14,7 +14,7 @@ jobs:
     if: github.event_name == 'pull_request'
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Build the Docker image
       run: docker build . --file Dockerfile
@@ -28,7 +28,7 @@ jobs:
         javacc: [7.0.5, 7.0.4]
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Authenticate to registry 
       run: echo "${{ secrets.GH_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
