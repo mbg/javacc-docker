@@ -6,11 +6,11 @@ This repository contains a `Dockerfile` that builds an image for the OpenJDK and
 docker pull ghcr.io/mbg/javacc-docker:7.0.4
 ```
 
-Versions `7.0.5` (`latest`) and `7.0.4` are available.
+Versions `7.0.10` (`latest`), `7.0.5`, and `7.0.4` are available.
 
 ## Building
 
-If you wish to build the image locally after cloning the repository, simply run e.g. `docker image build -t javacc-docker:latest .` command. The resulting image will be tagged with `javacc-docker:latest` and will use version `7.0.5` of JavaCC by default. You can explicitly specify the JavaCC version to use by adding `--build-arg JAVACC_VERSION=7.0.5` to the build command.
+If you wish to build the image locally after cloning the repository, simply run e.g. `docker image build -t javacc-docker:latest .` command. The resulting image will be tagged with `javacc-docker:latest` and will use version `7.0.10` of JavaCC by default. You can explicitly specify the JavaCC version to use by adding `--build-arg JAVACC_VERSION=7.0.5` to the build command.
 
 ## Usage
 
