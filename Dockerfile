@@ -1,4 +1,4 @@
-FROM openjdk:17-alpine
+FROM openjdk:18-alpine
 ARG JAVACC_VERSION=7.0.10
 ENV JAVACC_VERSION ${JAVACC_VERSION}
 LABEL maintainer="github@michael-gale.co.uk"
