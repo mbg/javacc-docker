@@ -6,6 +6,10 @@ updates:
       interval: "daily"
     assignees:
       - "mbg"
+    groups:
+      docker-actions:
+        patterns:
+          - "docker/*"
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
